@@ -2,13 +2,13 @@ package simulation.gold4_15683_감시;
 
 import java.util.*;
 
-int N;
-int M;
-static final int WALL = 6;
-static final int BLIND_SPOT = 0;
-static final int MONITORING_SPOT = -1;
 class Main {
-    static int[] CCTV_directions = {-1, 4, 2, 4, 4, 1};
+    static final int[] CCTV_directions = {-1, 4, 2, 4, 4, 1};
+
+    static int N;
+    static int M;
+    static int cctv_cnt;
+
     public static void main(String[] args) {
         int i, j;
 
@@ -30,23 +30,26 @@ class Main {
         }
 
         List<CCTV> cctv_list = get_cctv_list(office);
-        int result = recursive(office, cctv_list,0, 64);
+        cctv_cnt = cctv_list.size();
+        int result = cctv_on(office, cctv_list,0, 64);
         System.out.println(result);
     }
 
-    public static int recursive(List<Integer>[] office, List<CCTV> cctv_list, int n, int min) {
-        if (n == cctv_list.size()) {
+    public static int cctv_on(List<Integer>[] office, List<CCTV> cctv_list, int n, int min) {
+        if (n == cctv_cnt) {
             return (get_blind_spot(office));
         }
 
         List<Integer>[] copy;
         CCTV cctv = cctv_list.get(n);
+        int blind_spot_cnt;
         for (int direction = 0; direction < CCTV_directions[cctv.type]; direction++) {
             copy = array_copy(office);
             cctv.monitor(copy, direction);
-            int value = recursive(copy, cctv_list, n + 1, min);
-            if (value < min) {
-                min = value;
+            blind_spot_cnt = cctv_on(copy, cctv_list, n + 1, min);
+
+            if (blind_spot_cnt < min) {
+                min = blind_spot_cnt;
             }
         }
         return (min);
@@ -57,9 +60,8 @@ class Main {
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
-                if (office[i].get(j) == 0) {
+                if (office[i].get(j) == 0)
                     cnt++;
-                }
             }
         }
         return (cnt);
@@ -84,8 +86,9 @@ class Main {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
                 int type = office[i].get(j);
-                if (type != 0 && type != 6) {
-                    CCTV cctv = new CCTV(type, i, j);
+
+                if (CCTV.BLIND_SPOT < type && type < CCTV.WALL) {
+                    CCTV cctv = new CCTV(type, new Position(i, j));
                     cctv_list.add(cctv);
                 }
             }
@@ -95,11 +98,14 @@ class Main {
 }
 
 class CCTV {
+    static final int WALL = 6;
+    static final int BLIND_SPOT = 0;
+    static final int MONITORING_SPOT = -1;
+    static final int[] dy = {0, 1, 0, -1};
+    static final int[] dx = {1, 0, -1, 0};
+
     int type;
     Position pos;
-    int[] dx = {0, 1, 0, -1};
-    int[] dy = {1, 0, -1, 0};
-
     public CCTV(int type, Position pos) {
         this.type = type;
         this.pos = pos;
@@ -108,17 +114,17 @@ class CCTV {
     public void monitor(List<Integer>[] office, int direction) {
         switch (type) {
             case 5:
-                monitor_cal(office, i, j, (direction + 3) % 4);
+                monitor_cal(office, pos, (direction + 3) % 4);
             case 4:
-                monitor_cal(office, i, j, (direction + 2) % 4);
+                monitor_cal(office, pos, (direction + 2) % 4);
             case 3:
-                monitor_cal(office, i, j, (direction + 1) % 4);
+                monitor_cal(office, pos, (direction + 1) % 4);
             case 1:
-                monitor_cal(office, i, j, direction);
+                monitor_cal(office, pos, direction);
                 break;
             case 2:
-                monitor_cal(office, i, j, direction);
-                monitor_cal(office, i, j, (direction + 2) % 4);
+                monitor_cal(office, pos, direction);
+                monitor_cal(office, pos, (direction + 2) % 4);
                 break;
         }
     }
@@ -126,16 +132,21 @@ class CCTV {
     private void monitor_cal(List<Integer>[] office, Position pos, int direction) {
         int row = pos.row;
         int col = pos.col;
+        int cur_spot;
 
-        while (!isEnd(office, pos)) {
-
+        while (!isEnd(office, row, col)) {
+            cur_spot = office[row].get(col);
+            if (cur_spot == BLIND_SPOT)
+                office[row].set(col, MONITORING_SPOT);
+            row += dy[direction];
+            col += dx[direction];
         }
     }
 
     private boolean isEnd(List<Integer>[] office, int row, int col) {
-        if (row == (-1 || N) )
+        if (row == -1 || row == office.length)
             return true;
-        if (col == -1 || col == M)
+        if (col == -1 || col == office[row].size())
             return true;
         if (office[row].get(col) == WALL)
             return true;
@@ -147,11 +158,6 @@ class Position {
     int row, col;
 
     public Position(int row, int col) {
-        this.row = row;
-        this.col = col;
-    }
-
-    public void set_position(int row, int col) {
         this.row = row;
         this.col = col;
     }
