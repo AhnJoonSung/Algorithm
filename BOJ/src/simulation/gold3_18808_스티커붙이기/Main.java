@@ -3,8 +3,11 @@ package simulation.gold3_18808_스티커붙이기;
 import java.util.*;
 
 public class Main {
+    static final int FILLED = 1;
+    static final int EMPTY = 0;
+    static final int ROTATE_CNT = 4;
+
     static int N, M, K;
-    static int ROTATE_CNT = 4;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -52,52 +55,58 @@ public class Main {
                 sticker.rotate();
             }
         }
-
         int result = get_sticker_cnt(notebook);
         System.out.println(result);
     }
+
     public static Position find_stick_position(List<List<Integer>> notebook, Sticker sticker) {
         for (int i = 0; i <= (N - sticker.row); i++) {
             for (int j = 0; j <= (M - sticker.col); j++) {
-                if (can_stick(notebook, sticker, i, j))
-                    return (new Position(j, i));
+                if (can_stick(notebook, sticker, i, j)) {
+                    return (new Position(i, j));
+                }
             }
         }
         return (null);
     }
+
     private static boolean can_stick(List<List<Integer>> notebook, Sticker sticker, int not_i, int not_j) {
         for (int i = 0; i < sticker.row; i++) {
             for (int j = 0; j < sticker.col; j++) {
                 int sticker_block = sticker.graph_paper.get(i).get(j);
                 int not_block = notebook.get(not_i + i).get(not_j + j);
 
-                if (sticker_block == Sticker.FILLED && not_block == Sticker.FILLED)
+                if (sticker_block == FILLED && not_block == FILLED) {
                     return (false);
+                }
             }
         }
         return (true);
     }
+
     public static void stick(List<List<Integer>> notebook, Sticker sticker, Position position) {
-        int not_i = position.y;
-        int not_j = position.x;
+        int not_i = position.i;
+        int not_j = position.j;
 
         for (int i = 0; i < sticker.row; i++) {
             for (int j = 0; j < sticker.col; j++) {
                 int sticker_block = sticker.graph_paper.get(i).get(j);
 
-                if (sticker_block == Sticker.FILLED) {
-                    notebook.get(not_i + i).set(not_j + j, Sticker.FILLED);
+                if (sticker_block == FILLED) {
+                    notebook.get(not_i + i).set(not_j + j, FILLED);
                 }
             }
         }
     }
+
     public static int get_sticker_cnt(List<List<Integer>> notebook) {
         int cnt = 0;
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
-                if (notebook.get(i).get(j) == Sticker.FILLED)
+                if (notebook.get(i).get(j) == FILLED) {
                     cnt++;
+                }
             }
         }
         return (cnt);
@@ -105,9 +114,6 @@ public class Main {
 }
 
 class Sticker {
-    static final int FILLED = 1;
-    static final int EMPTY = 0;
-
     int row, col;
     List<List<Integer>> graph_paper;
 
@@ -127,6 +133,7 @@ class Sticker {
         for (int i = 0; i < col; i++) {
             for (int j = 0; j < row; j++) {
                 int original = graph_paper.get((row - 1)- j).get(i);
+
                 rotated_paper.get(i).add(original);
             }
         }
@@ -139,10 +146,10 @@ class Sticker {
 }
 
 class Position {
-    int x, y;
+    int i, j;
 
-    public Position (int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Position (int i, int j) {
+        this.i = i;
+        this.j = j;
     }
 }
