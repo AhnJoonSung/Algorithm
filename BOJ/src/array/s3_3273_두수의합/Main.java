@@ -7,22 +7,24 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
-        int[] cnt = new int[MAX + 1];
+        int[] nums = new int[n];
+        boolean[] check = new boolean[MAX + 1];
 
-        int num;
         for (int i = 0; i < n; i++) {
-            num = sc.nextInt();
-            cnt[num] = 1;
+            nums[i] = sc.nextInt();
+            check[nums[i]] = true;
         }
 
         int x = sc.nextInt();
         int ans = 0;
-        for (int i = 1; i < (x + 1) / 2; i++) {
-            if ((x - i) > MAX)
+        int target;
+        for (int i = 0; i < n; i++) {
+            target = x - nums[i];
+            if (target < 0 || target > MAX)
                 continue;
-            if ((cnt[i] + cnt[x - i]) == 2)
+            if (check[nums[i]] && check[target])
                 ans++;
         }
-        System.out.println(ans);
+        System.out.println(ans / 2);
     }
 }
