@@ -1,4 +1,4 @@
-package array.bronze4_10808_알파벳개수;
+package array.b4_10808_알파벳개수;
 
 import java.util.*;
 

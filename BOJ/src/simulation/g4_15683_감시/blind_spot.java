@@ -1,4 +1,4 @@
-package simulation.gold4_15683_감시;
+package simulation.g4_15683_감시;
 
 import java.util.*;
 

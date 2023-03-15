@@ -1,4 +1,4 @@
-package simulation.gold3_18808_스티커붙이기;
+package simulation.g3_18808_스티커붙이기;
 
 import java.util.*;
 
