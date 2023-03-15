@@ -1,28 +1,25 @@
 package array.s3_3273_두수의합;
 
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Main {
-    static int MAX = 1_000_000;
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
         int[] nums = new int[n];
-        boolean[] check = new boolean[MAX + 1];
+        Set<Integer> hashset = new HashSet<>();
 
         for (int i = 0; i < n; i++) {
             nums[i] = sc.nextInt();
-            check[nums[i]] = true;
+            hashset.add(nums[i]);
         }
 
         int x = sc.nextInt();
         int ans = 0;
-        int target;
-        for (int i = 0; i < n; i++) {
-            target = x - nums[i];
-            if (target < 0 || target > MAX)
-                continue;
-            if (check[nums[i]] && check[target])
+        for (int num : nums) {
+            if (hashset.contains(num) && hashset.contains(x - num))
                 ans++;
         }
         System.out.println(ans / 2);
