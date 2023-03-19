@@ -9,14 +9,13 @@ public class Main {
     public static void main(String[] args) throws IOException {
         try (BufferedReader br = new BufferedReader(new InputStreamReader (System.in))) {
             int tc = Integer.parseInt(br.readLine());
-            StringBuilder sb = new StringBuilder();
             for (int t = 0; t < tc; t++) {
+                StringBuilder sb = new StringBuilder();
                 String input = br.readLine();
                 for (char c : getPassword(input))
                     sb.append(c);
-                sb.append("\n");
+                System.out.println(sb);
             }
-            System.out.print(sb);
         }
     }
 
