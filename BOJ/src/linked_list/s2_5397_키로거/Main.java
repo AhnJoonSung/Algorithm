@@ -3,6 +3,7 @@ package linked_list.s2_5397_키로거;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -11,33 +12,32 @@ public class Main {
             StringBuilder sb = new StringBuilder();
             for (int t = 0; t < tc; t++) {
                 String input = br.readLine();
-                sb.append(getPassword(input)).append("\n");
+                for (char c : getPassword(input))
+                    sb.append(c);
+                sb.append("\n");
             }
             System.out.print(sb);
         }
     }
 
-    public static StringBuilder getPassword(String input) {
+    public static LinkedList<Character> getPassword(String input) {
+        LinkedList<Character> password = new LinkedList<>();
         int cursor = 0;
-        StringBuilder password = new StringBuilder();
         for (int i = 0; i < input.length(); i++) {
-            Character c = input.charAt(i);
-            switch (c) {
-                case '<':
-                    cursor = cursor == 0 ? 0 : cursor - 1;
-                    break;
-                case '>':
-                    cursor = cursor == password.length() ? cursor : cursor + 1;
-                    break;
-                case '-':
-                    if (password.length() > 0 && cursor != 0) {
-                        password.deleteCharAt(cursor - 1);
-                        cursor--;
-                    }
-                    break;
-                default :
-                    password.append(c);
-                    cursor++;
+            char c = input.charAt(i);
+            if (c == '<')
+                cursor = cursor == 0 ? 0 : cursor - 1;
+            else if (c == '>')
+                cursor = cursor == password.size() ? cursor : cursor + 1;
+            else if (c == '-') {
+                if (password.size() > 0 && cursor != 0) {
+                    password.remove(cursor - 1);
+                    cursor--;
+                }
+            }
+            else {
+                password.add(cursor, c);
+                cursor++;
             }
         }
         return (password);
