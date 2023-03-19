@@ -4,14 +4,16 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class Main {
-    public static void main(String[] args) {
+    static final int ALPHA_LEN = 26;
+
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         try {
             String str1 = br.readLine();
             String str2 = br.readLine();
 
-            int[] str1Char = new int[26];
-            int[] str2Char = new int[26];
+            int[] str1Char = new int[ALPHA_LEN];
+            int[] str2Char = new int[ALPHA_LEN];
 
             setStrChar(str1, str1Char);
             setStrChar(str2, str2Char);
@@ -22,8 +24,8 @@ public class Main {
             }
 
             System.out.println(cnt);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } finally {
+            br.close();
         }
     }
 
