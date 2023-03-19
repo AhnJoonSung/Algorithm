@@ -7,8 +7,7 @@ public class Main {
     static final int ALPHA_LEN = 26;
 
     public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        try {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
             String str1 = br.readLine();
             String str2 = br.readLine();
 
@@ -24,8 +23,6 @@ public class Main {
             }
 
             System.out.println(cnt);
-        } finally {
-            br.close();
         }
     }
 
