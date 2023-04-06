@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Main {
     static final int[] di = {-1, -2, -2, -1, 1, 2, 2, 1};
-    static final int[] dj = {-2, -2 , 1, 2, 2, 1, -1, -2};
+    static final int[] dj = {-2, -1 , 1, 2, 2, 1, -1, -2};
 
     static int n, row, col, tarR, tarC;
 
