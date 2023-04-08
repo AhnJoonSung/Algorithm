@@ -1,6 +1,5 @@
 package bfs.g3_2206_벽부수고이동하기;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
@@ -14,73 +13,70 @@ public class Main {
 
     static int n, m;
     static int[][] map;
-    static ArrayList<Position> walls;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         n = sc.nextInt();
         m = sc.nextInt();
 
-        walls = new ArrayList<>();
         map = new int[n][m];
         for (int i = 0; i < n; i++) {
             String[] temp = sc.next().split("");
             for (int j = 0; j < m; j++) {
                 map[i][j] = Integer.parseInt(temp[j]);
-                if (map[i][j] == WALL)
-                    walls.add(new Position(i, j, -1));
             }
         }
+        int min = n * m + 1;
+        Queue<Node> q = new LinkedList<>();
+        boolean[][][] visited = new boolean[n][m][2];
+        q.add(new Node(0, 0, 1, false));
+        visited[0][0][0] = true;
 
-        int min_distance = n * m + 1;
-        for (Position wall : walls) {
-            map[wall.i][wall.j] = EMPTY;
-
-            boolean[][] visited = new boolean[n][m];
-            Queue<Position> q = new LinkedList<>();
-            visited[0][0] = true;
-            q.add(new Position(0, 0, 1));
-
-            boolean arrive = false;
-            while (!q.isEmpty() && !arrive) {
-                Position cur = q.poll();
+        while (!q.isEmpty()) {
+            Node cur = q.poll();
+            if (cur.i == n - 1 && cur.j == m - 1) {
+                min = cur.dist;
+                break;
+            }
+            for (int dir = 0; dir < 4; dir++) {
+                int i = cur.i + di[dir];
+                int j = cur.j + dj[dir];
                 int dist = cur.dist + 1;
-                for (int dir = 0; dir < 4; dir++) {
-                    int i = cur.i + di[dir];
-                    int j = cur.j + dj[dir];
-                    if (i == (n - 1) && j == (m - 1)) {
-                        arrive = true;
-                        if (dist < min_distance)
-                            min_distance = dist;
-                        break;
+                if (i < 0 || i >= n || j < 0 || j >= m)
+                    continue;
+                if (cur.crash) {
+                    if (map[i][j] == EMPTY && !visited[i][j][1]) {
+                        visited[i][j][1] = true;
+                        q.add(new Node(i, j, dist, true));
                     }
-                    if (i < 0 || i >= n || j < 0 || j >= m)
-                        continue;
-                    if (visited[i][j] || map[i][j] == WALL)
-                        continue;
-                    q.add(new Position(i, j, dist));
-                    visited[i][j] = true;
+                }
+                else {
+                    if (map[i][j] == WALL && !visited[i][j][1]) {
+                        visited[i][j][1] = true;
+                        q.add(new Node(i, j, dist, true));
+                    }
+                    else if (map[i][j] == EMPTY && !visited[i][j][0]) {
+                        visited[i][j][0] = true;
+                        q.add(new Node(i, j, dist, false));
+                    }
                 }
             }
-            if (min_distance == n + m -1)
-                break;
-            map[wall.i][wall.j] = WALL;
         }
-        if (min_distance > n * m) {
+        if (min == n * m + 1)
             System.out.println(IMPOSSIBLE);
-        }
-        else {
-            System.out.println(min_distance);
-        }
+        else
+            System.out.println(min);
     }
 }
 
-class Position {
+class Node {
     int i, j, dist;
+    boolean crash;
 
-    public Position(int i, int j, int dist) {
+    public Node(int i, int j, int dist, boolean crash) {
         this.i = i;
         this.j = j;
         this.dist = dist;
+        this.crash = crash;
     }
 }
