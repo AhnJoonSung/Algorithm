@@ -53,6 +53,8 @@ public class Main {
                     continue;
 
                 if (map[i][j] == WALL) {
+                    if (visited[i][j][cur.remain - 1])
+                        continue;
                     q.add(new Node(i, j, dist, cur.remain - 1));
                     visited[i][j][cur.remain - 1] = true;
                 }
