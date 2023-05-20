@@ -1,4 +1,4 @@
-package stack;
+package stack.g4_17298_오큰수;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
