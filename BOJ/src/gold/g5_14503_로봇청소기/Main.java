@@ -41,40 +41,34 @@ public class Main {
 class Robot {
     private static final int[] dr = {-1, 0, 1, 0};
     private static final int[] dc = {0, 1, 0, -1};
-    private int direction;
+    private int dir;
     private int row, col;
     private final Block[][] room;
     private int cleaningCnt = 0;
 
-    public Robot(int row, int col, int direction, Block[][] room) {
+    public Robot(int row, int col, int dir, Block[][] room) {
         this.row = row;
         this.col = col;
-        this.direction = direction;
+        this.dir = dir;
         this.room = room;
     }
 
     public void moveForward() {
-        int newRow = row + dr[direction];
-        int newCol = col + dc[direction];
-
-        move(newRow, newCol);
+        move(dir);
     }
 
     public void moveBack() {
-        int backDir = (direction + 2) % 4;
-        int newRow = row + dr[backDir];
-        int newCol = col + dc[backDir];
-
-        move(newRow, newCol);
+        int backDir = (dir + 2) % 4;
+        move(backDir);
     }
 
-    private void move(int row, int col) {
-        this.row = row;
-        this.col = col;
+    private void move(int dir) {
+        this.row = row + dr[dir];
+        this.col = col + dc[dir];
     }
 
     public boolean canMoveBack() {
-        int backDir = (direction + 2) % 4;
+        int backDir = (dir + 2) % 4;
         int newRow = row + dr[backDir];
         int newCol = col + dc[backDir];
 
@@ -91,9 +85,9 @@ class Robot {
     public boolean findDirty() {
         int cnt = 4;
         while (cnt-- > 0) {
-            direction = (direction + 3) % 4;
-            int newRow = row + dr[direction];
-            int newCol = col + dc[direction];
+            dir = (dir + 3) % 4;
+            int newRow = row + dr[dir];
+            int newCol = col + dc[dir];
 
             if (blockByWall(newRow, newCol))
                 continue;
