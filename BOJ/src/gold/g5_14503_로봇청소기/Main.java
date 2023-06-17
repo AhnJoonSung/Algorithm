@@ -2,7 +2,7 @@ package gold.g5_14503_로봇청소기;
 
 import java.util.Scanner;
 
-import static gold.g5_14503_로봇청소기.Block.CLEAN;
+import static gold.g5_14503_로봇청소기.CellState.CLEAN;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,11 +15,11 @@ public class Main {
         int col = sc.nextInt();
         int dir = sc.nextInt();
 
-        Block[][] room = new Block[n][m];
+        CellState[][] room = new CellState[n][m];
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                room[i][j] = Block.get(sc.nextInt());
+                room[i][j] = CellState.get(sc.nextInt());
             }
         }
 
@@ -43,10 +43,10 @@ class Robot {
     private static final int[] dc = {0, 1, 0, -1};
     private int dir;
     private int row, col;
-    private final Block[][] room;
+    private final CellState[][] room;
     private int cleaningCnt = 0;
 
-    public Robot(int row, int col, int dir, Block[][] room) {
+    public Robot(int row, int col, int dir, CellState[][] room) {
         this.row = row;
         this.col = col;
         this.dir = dir;
@@ -106,12 +106,12 @@ class Robot {
     }
 }
 
-enum Block {
+enum CellState {
     DIRTY,
     WALL,
     CLEAN;
 
-    static final Block[] blocks = {DIRTY, WALL, CLEAN};
+    static final CellState[] CELL_STATES = {DIRTY, WALL, CLEAN};
 
     public boolean isDirty() {
         return this == DIRTY;
@@ -121,7 +121,7 @@ enum Block {
         return this == WALL;
     }
 
-    public static Block get(int id) {
-        return blocks[id];
+    public static CellState get(int id) {
+        return CELL_STATES[id];
     }
 }
