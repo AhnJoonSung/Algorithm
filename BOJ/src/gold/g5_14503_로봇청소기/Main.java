@@ -13,9 +13,9 @@ public class Main {
 
         Block[][] room = new Block[n][m];
 
-        int r = sc.nextInt();
-        int c = sc.nextInt();
-        int d = sc.nextInt();
+        int row = sc.nextInt();
+        int col = sc.nextInt();
+        int direction = sc.nextInt();
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
@@ -23,7 +23,7 @@ public class Main {
             }
         }
 
-        Robot robot = new Robot(r, c, d, room);
+        Robot robot = new Robot(row, col, direction, room);
         while (true) {
             robot.cleaning();
             if (robot.findDirty())
@@ -42,48 +42,48 @@ class Robot {
     private static final int[] dr = {-1, 0, 1, 0};
     private static final int[] dc = {0, 1, 0, -1};
     private int direction;
-    private int r, c;
+    private int row, col;
     private final Block[][] room;
     private int cleaningCnt = 0;
 
-    public Robot(int r, int c, int direction, Block[][] room) {
-        this.r = r;
-        this.c = c;
+    public Robot(int row, int col, int direction, Block[][] room) {
+        this.row = row;
+        this.col = col;
         this.direction = direction;
         this.room = room;
     }
 
     public void moveForward() {
-        int nr = r + dr[direction];
-        int nc = c + dc[direction];
+        int newRow = row + dr[direction];
+        int newCol = col + dc[direction];
 
-        move(nr, nc);
+        move(newRow, newCol);
     }
 
     public void moveBack() {
         int backDir = (direction + 2) % 4;
-        int nr = r + dr[backDir];
-        int nc = c + dc[backDir];
+        int newRow = row + dr[backDir];
+        int newCol = col + dc[backDir];
 
-        move(nr, nc);
+        move(newRow, newCol);
     }
 
-    private void move(int r, int c) {
-        this.r = r;
-        this.c = c;
+    private void move(int row, int col) {
+        this.row = row;
+        this.col = col;
     }
 
     public boolean canMoveBack() {
         int backDir = (direction + 2) % 4;
-        int nr = r + dr[backDir];
-        int nc = c + dc[backDir];
+        int newRow = row + dr[backDir];
+        int newCol = col + dc[backDir];
 
-        return !blockByWall(nr, nc);
+        return !blockByWall(newRow, newCol);
     }
 
     public void cleaning() {
-        if (room[r][c].isDirty()) {
-            room[r][c] = CLEAN;
+        if (room[row][col].isDirty()) {
+            room[row][col] = CLEAN;
             cleaningCnt++;
         }
     }
@@ -92,25 +92,24 @@ class Robot {
         int cnt = 4;
         while (cnt-- > 0) {
             direction = (direction + 3) % 4;
-            int nr = r + dr[direction];
-            int nc = c + dc[direction];
+            int newRow = row + dr[direction];
+            int newCol = col + dc[direction];
 
-            if (blockByWall(nr, nc))
+            if (blockByWall(newRow, newCol))
                 continue;
-            if (room[nr][nc].isDirty())
+            if (room[newRow][newCol].isDirty())
                 return true;
         }
         return false;
     }
 
-    private boolean blockByWall(int r, int c) {
-        return (room[r][c].isWall());
+    private boolean blockByWall(int row, int col) {
+        return (room[row][col].isWall());
     }
 
     public int getCleaningCnt() {
         return cleaningCnt;
     }
-
 }
 
 enum Block {
