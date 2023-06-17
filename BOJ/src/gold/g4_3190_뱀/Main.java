@@ -23,18 +23,14 @@ public class Main {
             commands.add(new Command(sc.nextInt(), sc.next().charAt(0)));
 
         int time = 0;
-        int direction = 0;
         Snake snake = new Snake(board);
-
         while (!snake.isEnd()) {
-            snake.move(direction);
+            snake.move();
             time++;
-            if (!commands.isEmpty() && time == commands.peek().time) {
-                if (commands.poll().direction == 'L')
-                    direction = (direction + 3) % 4;
-                else
-                    direction = (direction + 1) % 4;
-            }
+            if (commands.isEmpty())
+                continue;
+            if (time == commands.peek().time)
+                snake.turn(commands.poll().direction);
         }
         System.out.println(time);
     }
@@ -47,8 +43,9 @@ class Snake {
     private static final int APPLE = 2;
     private static final int EMPTY = 0;
 
-    private LinkedList<Node> snake = new LinkedList<>();
-    private int[][] board;
+    private final LinkedList<Node> snake = new LinkedList<>();
+    private int direction = 0;
+    private final int[][] board;
     private boolean isEnd = false;
 
     public Snake(int[][] board) {
@@ -60,7 +57,7 @@ class Snake {
         return isEnd;
     }
 
-    public void move(int direction) {
+    public void move() {
         Node head = snake.getLast();
         int newI = head.i + di[direction];
         int newJ = head.j + dj[direction];
@@ -75,6 +72,13 @@ class Snake {
         }
         snake.add(new Node(newI, newJ));
         board[newI][newJ] = SNAKE;
+    }
+
+    public void turn(char newDir) {
+        if (newDir == 'L')
+            direction = (direction + 3) % 4;
+        else if (newDir == 'D')
+            direction = (direction + 1) % 4;
     }
 
     private boolean isOut(int i, int j) {
