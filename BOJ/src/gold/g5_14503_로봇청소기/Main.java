@@ -11,11 +11,11 @@ public class Main {
         int n = sc.nextInt();
         int m = sc.nextInt();
 
-        Block[][] room = new Block[n][m];
-
         int row = sc.nextInt();
         int col = sc.nextInt();
-        int direction = sc.nextInt();
+        int dir = sc.nextInt();
+
+        Block[][] room = new Block[n][m];
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
@@ -23,7 +23,7 @@ public class Main {
             }
         }
 
-        Robot robot = new Robot(row, col, direction, room);
+        Robot robot = new Robot(row, col, dir, room);
         while (true) {
             robot.cleaning();
             if (robot.findDirty())
@@ -63,8 +63,8 @@ class Robot {
     }
 
     private void move(int dir) {
-        this.row = row + dr[dir];
-        this.col = col + dc[dir];
+        row = row + dr[dir];
+        col = col + dc[dir];
     }
 
     public boolean canMoveBack() {
