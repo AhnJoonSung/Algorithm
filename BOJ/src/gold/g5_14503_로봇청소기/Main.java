@@ -72,7 +72,9 @@ class Robot {
         int newRow = row + dr[backDir];
         int newCol = col + dc[backDir];
 
-        return !blockByWall(newRow, newCol);
+        if (blockByWall(newRow, newCol))
+            return false;
+        return true;
     }
 
     public void cleaning() {
