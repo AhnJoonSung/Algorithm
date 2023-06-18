@@ -4,8 +4,15 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
+import static gold.g4_3190_뱀.Main.*;
+
 public class Main {
-    private static final int APPLE = 2;
+    public static final int[] di = {0, 1, 0, -1};
+    public static final int[] dj = {1, 0, -1, 0};
+
+    public static final int EMPTY = 0;
+    public static final int SNAKE = 1;
+    public static final int APPLE = 2;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -37,12 +44,6 @@ public class Main {
 }
 
 class Snake {
-    private static final int[] di = {0, 1, 0, -1};
-    private static final int[] dj = {1, 0, -1, 0};
-    private static final int SNAKE = 1;
-    private static final int APPLE = 2;
-    private static final int EMPTY = 0;
-
     private final LinkedList<Node> snake = new LinkedList<>();
     private int direction = 0;
     private final int[][] board;
