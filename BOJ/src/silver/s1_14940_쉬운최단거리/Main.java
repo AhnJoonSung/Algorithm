@@ -5,15 +5,11 @@ import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
-    private static final int INIT = -1;
-    private static final int IMPOSSIBLE = 0;
     private static final int WALL = 0;
-    private static final int EMPTY = 1;
     private static final int TARGET = 2;
     private static final int[] di = {-1, 1, 0, 0};
     private static final int[] dj = {0, 0, -1, 1};
     private static int[][] map;
-    private static boolean[][] visited;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -22,22 +18,18 @@ public class Main {
         int m = sc.nextInt();
 
         map = new int[n][m];
+        int[][] distance = new int[n][m];
         Node target = null;
+
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 map[i][j] = sc.nextInt();
-                if (map[i][j] == TARGET)
-                    target = new Node(i, j, 0);
-            }
-        }
 
-        int[][] distance = new int[n][m];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (map[i][j] == WALL)
-                    distance[i][j] = IMPOSSIBLE;
-                else
-                    distance[i][j] = INIT;
+                if (map[i][j] == TARGET) {
+                    target = new Node(i, j, 0);
+                    distance[i][j] = 0;
+                } else
+                    distance[i][j] = -1 * map[i][j];
             }
         }
 
@@ -48,7 +40,7 @@ public class Main {
     public static void bfs(Node target, int[][] distance) {
         Queue<Node> q = new LinkedList<>();
         q.add(target);
-        visited = new boolean[map.length][map[0].length];
+        boolean[][] visited = new boolean[map.length][map[0].length];
         visited[target.i][target.j] = true;
         distance[target.i][target.j] = target.distance;
 
@@ -61,6 +53,7 @@ public class Main {
 
                 if (isOut(i, j) || visited[i][j])
                     continue;
+
                 visited[i][j] = true;
                 distance[i][j] = newDist;
                 q.add(new Node(i, j, newDist));
@@ -70,12 +63,14 @@ public class Main {
 
     public static void printMap(int[][] map) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                sb.append(map[i][j]).append(" ");
+
+        for (int[] row : map) {
+            for (int dist : row) {
+                sb.append(dist).append(" ");
             }
             sb.append("\n");
         }
+
         System.out.print(sb);
     }
 
