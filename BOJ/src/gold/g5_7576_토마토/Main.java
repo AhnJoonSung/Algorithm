@@ -5,7 +5,6 @@ import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
-    private static final int IMPOSSIBLE = -1;
     private static final int RIPE = 1;
     private static final int UNRIPE = 0;
     private static int unripeCnt;
@@ -33,8 +32,9 @@ public class Main {
     }
 
     public static int bfs(int time, Queue<Tomato> ripe) {
-        int[] di = {-1, 1, 0, 0};
-        int[] dj = {0, 0, -1, 1};
+        final int IMPOSSIBLE = -1;
+        final int[] di = {-1, 1, 0, 0};
+        final int[] dj = {0, 0, -1, 1};
 
         while (!ripe.isEmpty()) {
             Tomato cur = ripe.poll();
