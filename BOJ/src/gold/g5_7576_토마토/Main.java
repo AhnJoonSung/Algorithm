@@ -8,7 +8,6 @@ public class Main {
     private static final int IMPOSSIBLE = -1;
     private static final int RIPE = 1;
     private static final int UNRIPE = 0;
-    private static final int EMPTY = -1;
     private static int unripeCnt;
     private static int n, m;
     private static int[][] box;
@@ -56,8 +55,7 @@ public class Main {
 
         if (unripeCnt != 0)
             return IMPOSSIBLE;
-        else
-            return time;
+        return time;
     }
 
     public static boolean isOut(int i, int j) {
