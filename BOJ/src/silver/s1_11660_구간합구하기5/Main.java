@@ -33,18 +33,18 @@ public class Main {
     }
 
     public static int getSum(int x1, int y1, int x2, int y2) {
-        int sum = 0;
-        for (int i = x1; i <= x2; i++) {
-            sum += (sumTable[i][y2] - sumTable[i][y1 - 1]);
-        }
-        return sum;
+        return sumTable[x2][y2] - sumTable[x1 - 1][y2] - sumTable[x2][y1 - 1] + sumTable[x1 - 1][y1 - 1] ;
     }
 
     public static void setSumTable() {
         sumTable = new int[n + 1][n + 1];
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= n; j++) {
-                sumTable[i][j] = sumTable[i][j - 1] + table[i][j];
+                sumTable[i][j] =
+                        +sumTable[i - 1][j]
+                        +sumTable[i][j - 1]
+                        -sumTable[i - 1][j - 1]
+                        +table[i][j];
             }
         }
     }
