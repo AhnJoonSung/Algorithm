@@ -9,10 +9,18 @@ public class Main {
         int n = sc.nextInt();
         int k = sc.nextInt();
 
-        Thing[] things = new Thing[n];
-        for (int i = 0; i < n; i++) {
+        Thing[] things = new Thing[n + 1];
+        for (int i = 1; i <= n; i++) {
             things[i] = new Thing(sc.nextInt(), sc.nextInt());
         }
+
+        int[] dp = new int[k + 1];
+        for (int i = 1; i <= n; i++) {
+            for (int j = k; j - things[i].w >= 0; j--) {
+                dp[j] = Math.max(dp[j], things[i].v + dp[j - things[i].w]);
+            }
+        }
+        System.out.println(dp[k]);
     }
 }
 
