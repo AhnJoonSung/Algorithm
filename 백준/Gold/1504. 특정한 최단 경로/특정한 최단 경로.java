@@ -27,22 +27,19 @@ class Main {
         int v2 = sc.nextInt();
 
         // distance가 MAX_VALUE면 가는 경로가 없는 것
-        int startToV1 = getDistance(graph, 1, v1);
-        int startToV2 = getDistance(graph, 1, v2);
-        int v1ToV2 = getDistance(graph, v1, v2);
-        int v2ToV1 = v1ToV2;
-        int v1ToN = getDistance(graph, v1, n);
-        int v2ToN = getDistance(graph, v2, n);
+        int[] fromFirst = getDistances(graph, 1);
+        int[] fromV1 = getDistances(graph, v1);
+        int[] fromV2 = getDistances(graph, v2);
 
-        int dist1 = startToV1 + v1ToV2 + v2ToN;
-        int dist2 = startToV2 + v2ToV1 + v1ToN;
+        int dist1 = fromFirst[v1] + fromV1[v2] + fromV2[n];
+        int dist2 = fromFirst[v2] + fromV2[v1] + fromV1[n];
 
         int answer = Math.min(dist1, dist2);
         System.out.println(answer >= INF? -1 : answer);
         sc.close();
     }
 
-    static int getDistance(List<List<Edge>> graph, int start, int end) {
+    static int[] getDistances(List<List<Edge>> graph, int start) {
         int n = graph.size();
         int[] dist = new int[n];
 
@@ -70,7 +67,7 @@ class Main {
             }
         }
 
-        return dist[end];
+        return dist;
     }
 }
 
