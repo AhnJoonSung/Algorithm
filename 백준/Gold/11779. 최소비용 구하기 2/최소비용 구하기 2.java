@@ -42,9 +42,9 @@ class Main {
 
         for (int i = 0; i <n; i++) {
             dist[i] = INF;
-            prv[i] = -1;
         }
-
+        
+        prv[st] = -1;
         dist[st] = 0;
 
         PriorityQueue<Node> pq = new PriorityQueue<>();
