@@ -223,20 +223,20 @@ class Point{
         this.c = c;
     }
     
-    @Override
-    public boolean equals(Object other) {
-        if (other == null) return false;
+//     @Override
+//     public boolean equals(Object other) {
+//         if (other == null) return false;
         
-        if (!(other instanceof Point)) return false;
+//         if (!(other instanceof Point)) return false;
         
-        Point p = (Point)other;
-        if (r == p.r && c == p.c)
-            return true;
-        return false;
-    }
+//         Point p = (Point)other;
+//         if (r == p.r && c == p.c)
+//             return true;
+//         return false;
+//     }
     
-    @Override
-    public int hashCode() {
-        return Objects.hash(r, c);
-    }
+//     @Override
+//     public int hashCode() {
+//         return Objects.hash(r, c);
+//     }
 }
